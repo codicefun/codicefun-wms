@@ -1,3 +1,3 @@
 # codicefun-wms-api
 
-Warehouse Management System Api design by Codicefun
+Warehouse Management System Api designed by Codicefun

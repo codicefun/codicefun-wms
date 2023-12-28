@@ -1,3 +1,3 @@
 # codicefun-wms
 
-Warehouse Management System design by Codicefun
+Warehouse Management System designed by Codicefun
