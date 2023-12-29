@@ -3,10 +3,5 @@
 
 <mapper namespace="com.codicefun.wms.mapper.UserMapper">
 
-  <select id="selectByAge" resultType="com.codicefun.wms.entity.po.User">
-    SELECT *
-    FROM `user`
-    WHERE `age` = #{age}
-  </select>
 
 </mapper>

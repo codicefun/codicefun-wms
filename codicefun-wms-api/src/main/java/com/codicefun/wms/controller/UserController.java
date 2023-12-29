@@ -1,11 +1,9 @@
 package com.codicefun.wms.controller;
 
+import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.codicefun.wms.entity.po.User;
 import com.codicefun.wms.service.UserService;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -19,14 +17,30 @@ public class UserController {
         this.userService = userService;
     }
 
-    @GetMapping
-    public List<User> list() {
-        return userService.list();
+    @PostMapping
+    public boolean save(@RequestBody User user) {
+        return userService.save(user);
     }
 
-    @GetMapping("/age/{age}")
-    public List<User> getByAge(@PathVariable int age) {
-        return userService.getByAge(age);
+    @GetMapping
+    public List<User> list(@RequestParam(required = false) String name) {
+        LambdaQueryWrapper<User> queryWrapper = new LambdaQueryWrapper<>();
+
+        if (name != null) {
+            queryWrapper.like(User::getName, name);
+        }
+
+        return userService.list(queryWrapper);
+    }
+
+    @PutMapping
+    public boolean update(@RequestBody User user) {
+        return userService.updateById(user);
+    }
+
+    @DeleteMapping("{id}")
+    public boolean remove(@PathVariable int id) {
+        return userService.removeById(id);
     }
 
 }
