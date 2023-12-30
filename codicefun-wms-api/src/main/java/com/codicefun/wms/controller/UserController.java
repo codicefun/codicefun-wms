@@ -5,10 +5,10 @@ import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.codicefun.wms.entity.Constant;
 import com.codicefun.wms.entity.po.User;
+import com.codicefun.wms.entity.vo.PaginationVO;
+import com.codicefun.wms.entity.vo.ResponseVO;
 import com.codicefun.wms.service.UserService;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
 
 @RestController
 @RequestMapping("/user")
@@ -21,14 +21,15 @@ public class UserController {
     }
 
     @PostMapping
-    public boolean save(@RequestBody User user) {
-        return userService.save(user);
+    public ResponseVO<User> save(@RequestBody User user) {
+        return userService.save(user) ? ResponseVO.success() : ResponseVO.fail();
     }
 
     @GetMapping
-    public List<User> list(@RequestParam(required = false, defaultValue = Constant.PAGE_CURRENT) Long current,
-                           @RequestParam(required = false, defaultValue = Constant.PAGE_SIZE) Long size,
-                           User user) {
+    public ResponseVO<PaginationVO<User>> list(
+            @RequestParam(required = false, defaultValue = Constant.PAGE_CURRENT) Long current,
+            @RequestParam(required = false, defaultValue = Constant.PAGE_SIZE) Long size,
+            User user) {
         IPage<User> page = new Page<>(current, size);
         LambdaQueryWrapper<User> queryWrapper = new LambdaQueryWrapper<>();
 
@@ -40,22 +41,24 @@ public class UserController {
 
         IPage<User> result = userService.page(page, queryWrapper);
 
-        return result.getRecords();
+        return ResponseVO.page(result);
     }
 
     @GetMapping("/{id}")
-    public User get(@PathVariable Integer id) {
-        return userService.getById(id);
+    public ResponseVO<User> get(@PathVariable Integer id) {
+        User user = userService.getById(id);
+
+        return ResponseVO.success(user);
     }
 
     @PutMapping("/{id}")
-    public boolean update(@RequestBody User user) {
-        return userService.updateById(user);
+    public ResponseVO<User> update(@RequestBody User user) {
+        return userService.updateById(user) ? ResponseVO.success() : ResponseVO.fail();
     }
 
     @DeleteMapping("/{id}")
-    public boolean remove(@PathVariable int id) {
-        return userService.removeById(id);
+    public ResponseVO<User> remove(@PathVariable int id) {
+        return userService.removeById(id) ? ResponseVO.success() : ResponseVO.fail();
     }
 
 }
