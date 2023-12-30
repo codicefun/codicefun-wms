@@ -9,9 +9,9 @@ import java.util.List;
 @AllArgsConstructor
 public class PaginationVO<T> {
 
-    public Long total;
-    public Long current;
-    public Long size;
-    public List<T> list;
+    private Long total;
+    private Long current;
+    private Long size;
+    private List<T> list;
 
 }
