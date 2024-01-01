@@ -1,5 +1,8 @@
 <script lang="ts" setup>
-import { ArrowDown, Fold } from '@element-plus/icons-vue'
+import { ArrowDown, Expand, Fold } from '@element-plus/icons-vue'
+import { useSettingStore } from '@/stores'
+
+const settingStore = useSettingStore()
 
 const goUserCenter = () => {
   console.log('user center')
@@ -15,7 +18,8 @@ const logout = () => {
     <el-row style="height: 100%">
       <el-col :span="4" class="grid" style="justify-content: left">
         <el-icon>
-          <fold />
+          <expand v-if="settingStore.getIsCollapse" @click="settingStore.changeIsCollapse()" />
+          <fold v-else @click="settingStore.changeIsCollapse()" />
         </el-icon>
       </el-col>
       <el-col :span="16" class="grid" style="justify-content: center">
