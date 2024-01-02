@@ -25,6 +25,7 @@ public class UserController {
         return userService.save(user) ? ResponseVO.success() : ResponseVO.fail();
     }
 
+    @CrossOrigin
     @GetMapping
     public ResponseVO<PaginationVO<User>> list(
             @RequestParam(required = false, defaultValue = Constant.PAGE_CURRENT) Long current,
