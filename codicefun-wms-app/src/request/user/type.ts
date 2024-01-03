@@ -7,5 +7,6 @@ export type User = {
   sex: number
   phone: string
   role: number
-  isValid: string
+  state: number
+  isDeleted: number
 }
