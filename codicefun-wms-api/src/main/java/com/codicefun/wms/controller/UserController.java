@@ -35,8 +35,8 @@ public class UserController {
         LambdaQueryWrapper<User> queryWrapper = new LambdaQueryWrapper<>();
 
         if (user != null) {
-            if (user.getName() != null) {
-                queryWrapper.like(User::getName, user.getName());
+            if (user.getNickname() != null) {
+                queryWrapper.like(User::getNickname, user.getNickname());
             }
         }
 

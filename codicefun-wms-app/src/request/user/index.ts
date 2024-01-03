@@ -17,7 +17,7 @@ export const reqDeleteById = (id: number) => {
 }
 
 export const reqList = () => {
-  return request.get<Pagination<User>>(API_USER)
+  return request.get<any, Pagination<User>>(API_USER)
 }
 
 export const reqCreate = (data: User) => {

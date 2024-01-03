@@ -1,10 +1,11 @@
 export type User = {
-  username: string,
-  password: string,
-  name: string,
-  age: number,
-  sex: number,
-  phone: string,
-  role: number,
+  id: number
+  username: string
+  password: string
+  nickname: string
+  age: number
+  sex: number
+  phone: string
+  role: number
   isValid: string
 }
