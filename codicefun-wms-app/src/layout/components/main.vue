@@ -2,8 +2,37 @@
 import { ref } from 'vue'
 import { reqList } from '@/request/user'
 import { ElMessage } from 'element-plus'
+import type { User } from '@/request/user/type'
 
-const tableData = ref()
+const tableData = ref<User[]>()
+const current = ref<number>()
+const size = ref<number>()
+const total = ref<number>()
+const small = ref(false)
+const background = ref(false)
+const disabled = ref(false)
+
+const handleCurrentChange = (val: number) => {
+  reqList({
+    params: { current: val, size: null }
+  }).then(resp => {
+    if (resp.code === 200) {
+      current.value = val
+      tableData.value = resp.data.list
+    }
+  })
+}
+
+const handleSizeChange = (val: number) => {
+  reqList({
+    params: { current: null, size: val }
+  }).then(resp => {
+    if (resp.code === 200) {
+      size.value = val
+      tableData.value = resp.data.list
+    }
+  })
+}
 
 reqList().then(resp => {
   if (resp.code === 200) {
@@ -13,8 +42,10 @@ reqList().then(resp => {
         message: '没有数据',
         type: 'warning'
       })
-      tableData.value = {}
     } else {
+      current.value = resp.data.current
+      size.value = resp.data.size
+      total.value = resp.data.total
       tableData.value = resp.data.list
     }
   }
@@ -30,7 +61,7 @@ reqList().then(resp => {
       <el-table-column prop="age" label="年龄" width="100" />
       <el-table-column prop="sex" label="性别" width="100">
         <template #default="scope">
-          <el-tag :type="scope.row.sex === 1 ? 'primary' : 'danger'">
+          <el-tag :type="scope.row.sex === 1 ? '' : 'danger'">
             {{ scope.row.sex === 1 ? '男' : '女' }}
           </el-tag>
         </template>
@@ -58,11 +89,33 @@ reqList().then(resp => {
         </template>
       </el-table-column>
     </el-table>
+    <div class="demo-pagination-block">
+      <el-pagination
+        :current-page="current"
+        :page-size="size"
+        :page-sizes="[5, 10, 20]"
+        :small="small"
+        :disabled="disabled"
+        :background="background"
+        layout="total, sizes, prev, pager, next, jumper"
+        :total="total"
+        @current-change="handleCurrentChange"
+        @size-change="handleSizeChange"
+      />
+    </div>
   </el-main>
 </template>
 
 <style scoped>
 .el-main {
   height: 100%;
+}
+
+.demo-pagination-block {
+  margin-top: 10px;
+}
+
+.demo-pagination-block {
+  margin-bottom: 16px;
 }
 </style>

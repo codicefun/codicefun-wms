@@ -1,10 +1,5 @@
 <script lang="ts" setup>
 import { LayoutAside, LayoutFooter, LayoutHeader, LayoutMain } from './components'
-import { reqList } from '@/request/user'
-
-reqList().then(resp => {
-  console.log(resp)
-})
 </script>
 
 <template>

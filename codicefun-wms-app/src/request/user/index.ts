@@ -1,6 +1,7 @@
 import request from '@/request'
 import type { User } from './type'
 import type { Pagination } from '@/request/type'
+import type { AxiosRequestConfig } from 'axios'
 
 const API_USER = '/user'
 
@@ -16,8 +17,8 @@ export const reqDeleteById = (id: number) => {
   return request.delete(`${API_USER}/${id}`)
 }
 
-export const reqList = () => {
-  return request.get<any, Pagination<User>>(API_USER)
+export const reqList = (config?: AxiosRequestConfig) => {
+  return request.get<null, Pagination<User>>(API_USER, config)
 }
 
 export const reqCreate = (data: User) => {
