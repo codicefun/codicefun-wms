@@ -3,13 +3,9 @@
 </script>
 
 <template>
-  <el-main>
-    <router-view />
-  </el-main>
+  <h1>角色管理</h1>
 </template>
 
 <style scoped>
-.el-main {
-  height: 100%;
-}
+
 </style>

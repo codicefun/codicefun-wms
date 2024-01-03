@@ -1,36 +1,38 @@
 <script lang="ts" setup>
 import { Document, House, Setting } from '@element-plus/icons-vue'
 import { useSettingStore } from '@/stores'
+import { useRouter } from 'vue-router'
 
 const settingStore = useSettingStore()
+const router = useRouter()
 </script>
 
 <template>
   <el-aside>
     <el-scrollbar>
-      <el-menu :collapse="settingStore.getIsCollapse"
+      <el-menu :collapse="settingStore.isCollapse"
                active-text-color="#ffd04b"
                background-color="#545c64"
                default-active="1"
                ollapse-transition="true"
                text-color="#fff">
-        <el-menu-item index="1">
+        <el-menu-item index="1" @click="router.push('/')">
           <el-icon>
             <house />
           </el-icon>
           <template #title>首页</template>
         </el-menu-item>
-        <el-menu-item index="2">
+        <el-menu-item index="2" @click="router.push('/user')">
           <el-icon>
             <document />
           </el-icon>
-          <template #title>导航二</template>
+          <template #title>用户管理</template>
         </el-menu-item>
-        <el-menu-item index="3">
+        <el-menu-item index="3" @click="router.push('/role')">
           <el-icon>
             <setting />
           </el-icon>
-          <template #title>导航三</template>
+          <template #title>角色管理</template>
         </el-menu-item>
       </el-menu>
     </el-scrollbar>

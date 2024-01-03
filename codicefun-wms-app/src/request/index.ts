@@ -19,7 +19,7 @@ export class Request {
       (error: any) => {
         let message: string
 
-        switch (error.response.status) {
+        switch (error.response?.status) {
           case 400:
             message = '请求错误(400)'
             break
@@ -54,7 +54,7 @@ export class Request {
             message = 'HTTP版本不受支持(505)'
             break
           default:
-            message = `连接出错(${error.response.status})!`
+            message = `连接出错(${error.response?.status ?? error.message})!`
         }
 
         ElMessage({

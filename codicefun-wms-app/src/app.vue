@@ -1,11 +1,7 @@
-<script setup lang="ts">
-import { Layout } from './layout'
-</script>
+<script setup lang="ts"></script>
 
 <template>
-  <layout />
+  <router-view />
 </template>
 
-<style scoped>
-
-</style>
+<style scoped></style>

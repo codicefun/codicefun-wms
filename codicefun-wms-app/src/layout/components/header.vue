@@ -18,12 +18,12 @@ const logout = () => {
     <el-row style="height: 100%">
       <el-col :span="4" class="grid" style="justify-content: left">
         <el-icon>
-          <expand v-if="settingStore.getIsCollapse" @click="settingStore.changeIsCollapse()" />
+          <expand v-if="settingStore.isCollapse" @click="settingStore.changeIsCollapse()" />
           <fold v-else @click="settingStore.changeIsCollapse()" />
         </el-icon>
       </el-col>
       <el-col :span="16" class="grid" style="justify-content: center">
-        欢迎来到仓库管理系统
+        仓库管理系统
       </el-col>
       <el-col :span="4" class="grid" style="justify-content: right">
         <el-dropdown size="large">
