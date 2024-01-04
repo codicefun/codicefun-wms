@@ -1,27 +1,37 @@
 <script setup lang="ts">
 import { ref } from 'vue'
-import { reqCreate, reqDeleteById, reqList, reqUpdateById } from '@/request/goods'
+import { reqChangeAmount, reqCreate, reqDeleteById, reqList, reqUpdateById } from '@/request/goods'
 import { ElMessage, ElMessageBox } from 'element-plus'
 import type { Goods } from '@/request/goods/type'
 import { reqTypeList } from '@/request/goodstype'
 import { reqWarehouseList } from '@/request/warehouse'
 import type { GoodsType } from '@/request/goodstype/type'
 import type { Warehouse } from '@/request/warehouse/type'
+import type { AmountForm } from '@/views/type'
+import type { User } from '@/request/user/type'
+import { reqUserList } from '@/request/user'
 
+// Constants
 const tableData = ref<Goods[]>()
-const formData = ref<Goods>({} as Goods)
-const formTitle = ref<string>()
+const allFormData = ref<Goods>({} as Goods)
+const allFormTitle = ref<string>()
+const amountFormData = ref<AmountForm>({} as AmountForm)
+const amountFormTitle = ref<string>()
 
 const current = ref<number>()
 const size = ref<number>()
 const total = ref<number>()
 
 const dialogVisible = ref(false)
+const amountDialogVisible = ref(false)
 const typeOption = ref<GoodsType[]>()
 const warehouseOption = ref<Warehouse[]>()
+const userOption = ref<User[]>()
 const type = ref('')
 const warehouse = ref('')
+const user = ref('')
 
+// Functions
 const updateData = async () => {
   const resp = await reqList({ params: { current: current.value, size: size.value } })
 
@@ -51,17 +61,17 @@ const handleSizeChange = async (val: number) => {
 
 const showEditDialog = (row: Goods) => {
   dialogVisible.value = true
-  formData.value = { ...row }
-  warehouse.value = formData.value.warehouse
-  type.value = formData.value.type
-  formTitle.value = '修改物品信息'
+  allFormData.value = { ...row }
+  warehouse.value = allFormData.value.warehouse
+  type.value = allFormData.value.type
+  allFormTitle.value = '修改物品信息'
 }
 
 const edit = async () => {
   dialogVisible.value = false
-  formData.value.warehouse = warehouse.value
-  formData.value.type = type.value
-  const resp = await reqUpdateById(formData.value.id, formData.value)
+  allFormData.value.warehouse = warehouse.value
+  allFormData.value.type = type.value
+  const resp = await reqUpdateById(allFormData.value.id, allFormData.value)
 
   if (resp.code === 200) {
     // Update table data
@@ -76,17 +86,29 @@ const edit = async () => {
 
 const showCreateDialog = () => {
   dialogVisible.value = true
-  formData.value = {} as Goods
+  allFormData.value = {} as Goods
   warehouse.value = ''
   type.value = ''
-  formTitle.value = '新增物品信息'
+  allFormTitle.value = '新增物品信息'
+}
+
+const showIncreaseDialog = (row: Goods) => {
+  amountDialogVisible.value = true
+  amountFormTitle.value = '入库'
+  allFormData.value = { ...row }
+}
+
+const showDecreaseDialog = (row: Goods) => {
+  amountDialogVisible.value = true
+  amountFormTitle.value = '出库'
+  allFormData.value = { ...row }
 }
 
 const create = async () => {
   dialogVisible.value = false
-  formData.value.warehouse = warehouse.value
-  formData.value.type = type.value
-  const resp = await reqCreate(formData.value)
+  allFormData.value.warehouse = warehouse.value
+  allFormData.value.type = type.value
+  const resp = await reqCreate(allFormData.value)
 
   if (resp.code === 200) {
     // Update table data
@@ -129,6 +151,52 @@ const deleteRow = async (id: number) => {
   }
 }
 
+const increase = async () => {
+  amountDialogVisible.value = false
+  const resp = await reqChangeAmount(allFormData.value.id, {
+    amount: Number(amountFormData.value.amount) + Number(allFormData.value.amount),
+    username: user.value
+  })
+
+  if (resp.code === 200) {
+    await updateData()
+    ElMessage({
+      showClose: true,
+      message: '入库成功',
+      type: 'success'
+    })
+  }
+}
+
+const decrease = async () => {
+  const amount = Number(allFormData.value.amount) - Number(amountFormData.value.amount)
+
+  if (amount < 0) {
+    ElMessage({
+      showClose: true,
+      message: '库存不够',
+      type: 'error'
+    })
+
+    return Promise.reject(new Error('库存不够'))
+  }
+
+  const resp = await reqChangeAmount(allFormData.value.id, {
+    amount,
+    username: user.value
+  })
+
+  if (resp.code === 200) {
+    amountDialogVisible.value = false
+    await updateData()
+    ElMessage({
+      showClose: true,
+      message: '出库成功',
+      type: 'success'
+    })
+  }
+}
+
 // Get data in the beginning
 reqList().then(resp => {
   if (resp.code === 200) {
@@ -149,6 +217,11 @@ reqWarehouseList({ params: { size: 100 } }).then(resp => {
     warehouseOption.value = resp.data.list
   }
 })
+reqUserList({ params: { size: 100 } }).then(resp => {
+  if (resp.code === 200) {
+    userOption.value = resp.data.list
+  }
+})
 </script>
 
 <template>
@@ -165,9 +238,11 @@ reqWarehouseList({ params: { size: 100 } }).then(resp => {
       <el-table-column prop="type" label="分类" width="100" />
       <el-table-column prop="amount" label="数量" width="100" />
       <el-table-column prop="description" label="描述" width="300" />
-      <el-table-column fixed="right" label="操作" width="120">
+      <el-table-column fixed="right" label="操作" width="220">
         <template #default="{row}">
           <el-button link type="primary" @click="showEditDialog(row)">编辑</el-button>
+          <el-button link type="primary" @click="showIncreaseDialog(row)">入库</el-button>
+          <el-button link type="primary" @click="showDecreaseDialog(row)">出库</el-button>
           <el-button link type="danger" @click="deleteRow(row.id)">删除</el-button>
         </template>
       </el-table-column>
@@ -186,15 +261,15 @@ reqWarehouseList({ params: { size: 100 } }).then(resp => {
   </div>
   <el-dialog
     v-model="dialogVisible"
-    :title="formTitle"
+    :title="allFormTitle"
     width="30%"
   >
     <el-form
       label-width="100px"
-      :model="formData"
+      :model="allFormData"
       style="max-width: 460px">
       <el-form-item label="名称">
-        <el-input v-model="formData.name" />
+        <el-input v-model="allFormData.name" />
       </el-form-item>
       <el-form-item label="仓库">
         <el-select v-model="warehouse" placeholder="请选择">
@@ -207,17 +282,43 @@ reqWarehouseList({ params: { size: 100 } }).then(resp => {
         </el-select>
       </el-form-item>
       <el-form-item label="数量">
-        <el-input type="number" v-model="formData.amount" />
+        <el-input type="number" v-model="allFormData.amount" />
       </el-form-item>
       <el-form-item label="描述">
-        <el-input type="textarea" v-model="formData.description" />
+        <el-input type="textarea" v-model="allFormData.description" />
       </el-form-item>
     </el-form>
     <template #footer>
       <span class="dialog-footer">
         <el-button @click="dialogVisible = false">取消</el-button>
-        <el-button v-if="formTitle?.startsWith('修改')" type="primary" @click="edit">确认</el-button>
+        <el-button v-if="allFormTitle?.startsWith('修改')" type="primary" @click="edit">确认</el-button>
         <el-button v-else type="primary" @click="create">确认</el-button>
+      </span>
+    </template>
+  </el-dialog>
+  <el-dialog
+    v-model="amountDialogVisible"
+    :title="amountFormTitle"
+    width="30%"
+  >
+    <el-form
+      label-width="100px"
+      :model="amountFormData"
+      style="max-width: 460px">
+      <el-form-item label="数量">
+        <el-input type="number" v-model="amountFormData.amount" />
+      </el-form-item>
+      <el-form-item label="申请人">
+        <el-select v-model="user" placeholder="请选择">
+          <el-option v-for="item in userOption" :key="item.nickname" :label="item.nickname" :value="item.nickname" />
+        </el-select>
+      </el-form-item>
+    </el-form>
+    <template #footer>
+      <span class="dialog-footer">
+        <el-button @click="amountDialogVisible = false">取消</el-button>
+        <el-button v-if="amountFormTitle === '入库'" type="primary" @click="increase">确认</el-button>
+        <el-button v-else type="primary" @click="decrease">确认</el-button>
       </span>
     </template>
   </el-dialog>

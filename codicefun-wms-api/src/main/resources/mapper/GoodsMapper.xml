@@ -12,7 +12,7 @@
     <result property="description" column="description"/>
   </resultMap>
 
-  <select id="selectById" resultMap="GoodsMap">
+  <select id="selectVOById" resultMap="GoodsMap">
     SELECT `g`.`id`, `g`.`name`, `w`.`name` AS `warehouse_name`, `t`.`name` AS `type_name`, `amount`, `g`.`description`
     FROM `goods` AS `g`
            JOIN `warehouse` AS `w` ON `g`.`warehouse_id` = `w`.`id`
@@ -20,7 +20,7 @@
     WHERE `g`.`id` = #{id}
   </select>
 
-  <select id="selectPage" resultMap="GoodsMap">
+  <select id="selectVOPage" resultMap="GoodsMap">
     SELECT `g`.`id`, `g`.`name`, `w`.`name` AS `warehouse_name`, `t`.`name` AS `type_name`, `amount`, `g`.`description`
     FROM `goods` AS `g`
            JOIN `warehouse` AS `w` ON `g`.`warehouse_id` = `w`.`id`

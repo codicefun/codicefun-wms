@@ -18,7 +18,7 @@ class GoodsMapperTest {
 
     @Test
     void testSelectPage() {
-        System.out.println(goodsMapper.selectPage(new Page<>()).getRecords());
+        System.out.println(goodsMapper.selectVOPage(new Page<>()).getRecords());
     }
 
 }

@@ -7,6 +7,7 @@ import com.codicefun.wms.entity.Constant;
 import com.codicefun.wms.entity.po.Goods;
 import com.codicefun.wms.entity.po.GoodsType;
 import com.codicefun.wms.entity.po.Warehouse;
+import com.codicefun.wms.entity.vo.AmountVO;
 import com.codicefun.wms.entity.vo.GoodsVO;
 import com.codicefun.wms.entity.vo.PaginationVO;
 import com.codicefun.wms.entity.vo.ResponseVO;
@@ -43,14 +44,14 @@ public class GoodsController {
             @RequestParam(required = false, defaultValue = Constant.PAGE_CURRENT) Long current,
             @RequestParam(required = false, defaultValue = Constant.PAGE_SIZE) Long size) {
         IPage<GoodsVO> page = new Page<>(current, size);
-        IPage<GoodsVO> result = goodsService.getPage(page);
+        IPage<GoodsVO> result = goodsService.pageVO(page);
 
         return ResponseVO.page(result);
     }
 
     @GetMapping("/{id}")
     public ResponseVO<GoodsVO> get(@PathVariable Long id) {
-        GoodsVO goodsVO = goodsService.getById(id);
+        GoodsVO goodsVO = goodsService.getVOById(id);
 
         return ResponseVO.success(goodsVO);
     }
@@ -67,13 +68,24 @@ public class GoodsController {
         return goodsService.removeById(id) ? ResponseVO.success() : ResponseVO.fail();
     }
 
+    @PutMapping("/{id}/amount")
+    public ResponseVO<Goods> changeAmount(@PathVariable Long id, @RequestBody AmountVO amountVO) {
+        Goods goods = goodsService.getById(id);
+        goods.setAmount(amountVO.getAmount());
+
+        return goodsService.updateById(goods) ? ResponseVO.success() : ResponseVO.fail();
+    }
+
     private Goods vo2po(GoodsVO goodsVO) {
         String warehouseName = goodsVO.getWarehouse();
         String typeName = goodsVO.getType();
+
         LambdaQueryWrapper<Warehouse> warehouseLambdaQueryWrapper = new LambdaQueryWrapper<>();
-        warehouseLambdaQueryWrapper.eq(Warehouse::getName, warehouseName);
         LambdaQueryWrapper<GoodsType> goodsTypeLambdaQueryWrapper = new LambdaQueryWrapper<>();
+
+        warehouseLambdaQueryWrapper.eq(Warehouse::getName, warehouseName);
         goodsTypeLambdaQueryWrapper.eq(GoodsType::getName, typeName);
+
         Warehouse warehouse = warehouseService.getOne(warehouseLambdaQueryWrapper);
         GoodsType type = goodsTypeService.getOne(goodsTypeLambdaQueryWrapper);
 

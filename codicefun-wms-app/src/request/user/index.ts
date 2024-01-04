@@ -17,7 +17,7 @@ export const reqDeleteById = (id: number) => {
   return request.delete(`${API_USER}/${id}`)
 }
 
-export const reqList = (config?: AxiosRequestConfig) => {
+export const reqUserList = (config?: AxiosRequestConfig) => {
   return request.get<null, Pagination<User>>(API_USER, config)
 }
 

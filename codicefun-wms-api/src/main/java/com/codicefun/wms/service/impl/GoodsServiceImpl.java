@@ -12,13 +12,13 @@ import org.springframework.stereotype.Service;
 public class GoodsServiceImpl extends ServiceImpl<GoodsMapper, Goods> implements GoodsService {
 
     @Override
-    public GoodsVO getById(Long id) {
-        return baseMapper.selectById(id);
+    public GoodsVO getVOById(Long id) {
+        return baseMapper.selectVOById(id);
     }
 
     @Override
-    public IPage<GoodsVO> getPage(IPage<GoodsVO> page) {
-        return baseMapper.selectPage(page);
+    public IPage<GoodsVO> pageVO(IPage<GoodsVO> page) {
+        return baseMapper.selectVOPage(page);
     }
 
 }
