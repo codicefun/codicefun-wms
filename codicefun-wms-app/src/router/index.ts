@@ -11,14 +11,14 @@ router.beforeEach((to, from) => {
   const userStore = useUserStore()
   const token = userStore.token
 
-  // Have login
-  if (to.path === '/login' && token !== '') {
-    return '/'
-  }
-
-  // Not login
-  if (to.path !== '/login' && token === '') {
-    return '/login'
+  if (token !== '') {
+    if (to.path === '/login') {
+      return '/'
+    }
+  } else {
+    if (to.path !== '/login' && to.path !== '/register') {
+      return '/login'
+    }
   }
 })
 

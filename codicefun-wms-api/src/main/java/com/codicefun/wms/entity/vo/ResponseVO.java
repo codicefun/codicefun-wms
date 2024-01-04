@@ -13,6 +13,18 @@ public class ResponseVO<T> {
     private String message;
     private T data;
 
+    public ResponseVO<T> code(int code) {
+        this.setCode(code);
+
+        return this;
+    }
+
+    public ResponseVO<T> message(String message) {
+        this.setMessage(message);
+
+        return this;
+    }
+
     public static <T> ResponseVO<T> success() {
         return success(null);
     }

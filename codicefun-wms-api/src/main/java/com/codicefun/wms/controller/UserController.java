@@ -103,4 +103,23 @@ public class UserController {
         return ResponseVO.fail();
     }
 
+    @PostMapping("/register")
+    public ResponseVO<Object> register(@RequestBody LoginQO loginQO) {
+        LambdaQueryWrapper<User> queryWrapper = new LambdaQueryWrapper<>();
+        String username = loginQO.getUsername();
+        String password = loginQO.getPassword();
+
+        if (username != null && password != null) {
+            queryWrapper.eq(User::getUsername, username);
+            User user = userService.getOne(queryWrapper);
+            if (user != null) {
+                return ResponseVO.fail().message("用户已经存在了");
+            }
+            return userService.save(new User(username, password)) ? ResponseVO.success() : ResponseVO.fail()
+                                                                                                     .message("创建用户失败");
+        } else {
+            return ResponseVO.fail().message("用户名和密码不能为空");
+        }
+    }
+
 }

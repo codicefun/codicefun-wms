@@ -32,3 +32,7 @@ export const reqChangeState = (id: number) => {
 export const reqLogin = (data: LoginData) => {
   return request.post<LoginData, Token>(`${API_USER}/login`, data)
 }
+
+export const reqRegister = (data: LoginData) => {
+  return request.post<LoginData>(`${API_USER}/register`, data)
+}

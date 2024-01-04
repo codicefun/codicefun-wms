@@ -2,30 +2,26 @@
 import { ref } from 'vue'
 import { ElMessage } from 'element-plus'
 import type { LoginData } from '@/request/user/type'
-import { reqLogin } from '@/request/user'
+import { reqRegister } from '@/request/user'
 import { useRouter } from 'vue-router'
-import { useUserStore } from '@/stores'
 
 const formData = ref<LoginData>({} as LoginData)
 const router = useRouter()
-const userStore = useUserStore()
 
 const submit = async function() {
-  const resp = await reqLogin(formData.value)
+  const resp = await reqRegister(formData.value)
 
   if (resp.code === 200) {
     ElMessage({
       showClose: true,
-      message: '登录成功',
+      message: '注册成功',
       type: 'success'
     })
-    userStore.username = formData.value.username
-    userStore.token = resp.data.token
-    await router.push('/')
+    await router.push('/login')
   } else {
     ElMessage({
       showClose: true,
-      message: `登录失败: {code: ${resp.code}, message: ${resp.message}}`,
+      message: `注册失败: {code: ${resp.code}, message: ${resp.message}}`,
       type: 'error'
     })
   }
@@ -38,7 +34,7 @@ const reset = function() {
 
 <template>
   <div class="container">
-    <h2>登录</h2>
+    <h2>注册</h2>
     <el-form label-position="right"
              :model="formData"
              label-width="100">
@@ -49,8 +45,7 @@ const reset = function() {
         <el-input v-model="formData.password" type="password" />
       </el-form-item>
       <el-form-item>
-        <el-button type="success" @click="router.push('/register')">注册</el-button>
-        <el-button type="primary" @click="submit">登录</el-button>
+        <el-button type="primary" @click="submit">注册</el-button>
         <el-button type="warning" @click="reset">重置</el-button>
       </el-form-item>
     </el-form>
