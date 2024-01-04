@@ -28,11 +28,11 @@ const router = useRouter()
           </el-icon>
           <template #title>用户管理</template>
         </el-menu-item>
-        <el-menu-item index="3" @click="router.push('/role')">
+        <el-menu-item index="3" @click="router.push('/warehouse')">
           <el-icon>
             <setting />
           </el-icon>
-          <template #title>角色管理</template>
+          <template #title>仓库管理</template>
         </el-menu-item>
       </el-menu>
     </el-scrollbar>
