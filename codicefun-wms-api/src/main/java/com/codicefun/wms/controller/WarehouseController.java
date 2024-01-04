@@ -58,7 +58,7 @@ public class WarehouseController {
     }
 
     @DeleteMapping("/{id}")
-    public ResponseVO<User> remove(@PathVariable int id) {
+    public ResponseVO<Warehouse> remove(@PathVariable int id) {
         return warehouseService.removeById(id) ? ResponseVO.success() : ResponseVO.fail();
     }
 

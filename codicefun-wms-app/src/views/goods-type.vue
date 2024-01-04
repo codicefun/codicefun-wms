@@ -1,11 +1,11 @@
 <script setup lang="ts">
 import { ref } from 'vue'
-import { reqCreate, reqDeleteById, reqList, reqUpdateById } from '@/request/warehouse'
+import { reqCreate, reqDeleteById, reqList, reqUpdateById } from '@/request/goodstype'
 import { ElMessage, ElMessageBox } from 'element-plus'
-import type { Warehouse } from '@/request/warehouse/type'
+import type { GoodsType } from '@/request/goodstype/type'
 
-const tableData = ref<Warehouse[]>()
-const formData = ref<Warehouse>({} as Warehouse)
+const tableData = ref<GoodsType[]>()
+const formData = ref<GoodsType>({} as GoodsType)
 const formTitle = ref<string>()
 
 const current = ref<number>()
@@ -40,10 +40,10 @@ const handleSizeChange = async (val: number) => {
   }
 }
 
-const showEditDialog = (row: Warehouse) => {
+const showEditDialog = (row: GoodsType) => {
   dialogVisible.value = true
   formData.value = { ...row }
-  formTitle.value = '修改仓库信息'
+  formTitle.value = '修改物品分类信息'
 }
 
 const edit = async () => {
@@ -63,8 +63,8 @@ const edit = async () => {
 
 const showCreateDialog = () => {
   dialogVisible.value = true
-  formData.value = {} as Warehouse
-  formTitle.value = '新增仓库信息'
+  formData.value = {} as GoodsType
+  formTitle.value = '新增物品分类信息'
 }
 
 const create = async () => {
@@ -132,7 +132,7 @@ reqList().then(resp => {
   <el-scrollbar>
     <el-table size="large" :data="tableData" style="width: 100%;">
       <el-table-column prop="id" label="ID" width="100" />
-      <el-table-column prop="name" label="仓库名" width="200" />
+      <el-table-column prop="name" label="分类名" width="200" />
       <el-table-column prop="description" label="描述" width="300" />
       <el-table-column fixed="right" label="操作" width="120">
         <template #default="{row}">
@@ -162,7 +162,7 @@ reqList().then(resp => {
       label-width="100px"
       :model="formData"
       style="max-width: 460px">
-      <el-form-item label="仓库名">
+      <el-form-item label="分类名">
         <el-input v-model="formData.name" />
       </el-form-item>
       <el-form-item label="描述">
