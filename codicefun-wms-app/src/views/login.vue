@@ -38,7 +38,7 @@ const reset = function() {
 
 <template>
   <div class="container">
-    <h2>Welcome to</h2>
+    <h2>Login to</h2>
     <h2>Warehouse Management System</h2>
     <el-form label-position="right"
              :model="formData"

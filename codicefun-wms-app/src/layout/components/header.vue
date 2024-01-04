@@ -1,15 +1,20 @@
 <script lang="ts" setup>
 import { ArrowDown, Expand, Fold } from '@element-plus/icons-vue'
-import { useSettingStore } from '@/stores'
+import { useSettingStore, useUserStore } from '@/stores'
+import { useRouter } from 'vue-router'
 
 const settingStore = useSettingStore()
+const userStore = useUserStore()
+const router = useRouter()
 
 const goUserCenter = () => {
-  console.log('user center')
+  router.push('/')
 }
 
 const logout = () => {
-  console.log('logout')
+  userStore.username = ''
+  userStore.token = ''
+  router.push('/login')
 }
 </script>
 
@@ -28,7 +33,7 @@ const logout = () => {
       <el-col :span="4" class="grid" style="justify-content: right">
         <el-dropdown size="large">
         <span class="el-dropdown-link">
-          Admin
+          {{ userStore.username }}
           <el-icon class="el-icon--right">
             <arrow-down />
           </el-icon>
