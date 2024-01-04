@@ -1,5 +1,5 @@
 import request from '@/request'
-import type { User } from './type'
+import type { LoginData, Token, User } from './type'
 import type { Pagination } from '@/request/type'
 import type { AxiosRequestConfig } from 'axios'
 
@@ -23,4 +23,8 @@ export const reqList = (config?: AxiosRequestConfig) => {
 
 export const reqCreate = (data: User) => {
   return request.post(API_USER, data)
+}
+
+export const reqLogin = (data: LoginData) => {
+  return request.post<LoginData, Token>(`${API_USER}/login`, data)
 }

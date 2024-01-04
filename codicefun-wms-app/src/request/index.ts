@@ -1,6 +1,7 @@
 import axios, { type AxiosInstance, type AxiosRequestConfig, type AxiosResponse } from 'axios'
 import { ElMessage } from 'element-plus'
 import type { Response } from '@/request/type'
+import { useUserStore } from '@/stores'
 
 export class Request {
   instance: AxiosInstance
@@ -9,8 +10,18 @@ export class Request {
   constructor(config: AxiosRequestConfig) {
     this.instance = axios.create(Object.assign(this.config, config))
 
-    // TODO: check token
-    this.instance.interceptors.request.use()
+    this.instance.interceptors.request.use(
+      (config) => {
+        const userStore = useUserStore()
+        const token = userStore.token
+
+        if (token !== '') {
+          config.headers.token = token
+        }
+
+        return config
+      }
+    )
 
     this.instance.interceptors.response.use(
       (response: AxiosResponse) => {

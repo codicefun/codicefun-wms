@@ -18,11 +18,7 @@ public class ResponseVO<T> {
     }
 
     public static <T> ResponseVO<T> success(T data) {
-        return ResponseVO.<T>builder()
-                         .code(ResponseStatusEnum.SUCCESS.getCode())
-                         .message(ResponseStatusEnum.SUCCESS.getMessage())
-                         .data(data)
-                         .build();
+        return respond(ResponseStatusEnum.SUCCESS, data);
     }
 
     public static <T> ResponseVO<T> fail() {
@@ -30,9 +26,13 @@ public class ResponseVO<T> {
     }
 
     public static <T> ResponseVO<T> fail(T data) {
+        return respond(ResponseStatusEnum.FAIL, data);
+    }
+
+    public static <T> ResponseVO<T> respond(ResponseStatusEnum status, T data) {
         return ResponseVO.<T>builder()
-                         .code(ResponseStatusEnum.FAIL.getCode())
-                         .message(ResponseStatusEnum.FAIL.getMessage())
+                         .code(status.getCode())
+                         .message(status.getMessage())
                          .data(data)
                          .build();
     }

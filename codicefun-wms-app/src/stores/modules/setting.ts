@@ -11,7 +11,8 @@ const useSettingStore = defineStore('setting', {
       changeIsCollapse() {
         this.isCollapse = !this.isCollapse
       }
-    }
+    },
+  persist: true
   }
 )
 

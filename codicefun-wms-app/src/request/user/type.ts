@@ -10,3 +10,12 @@ export type User = {
   state: number
   isDeleted: number
 }
+
+export type LoginData = {
+  username: string
+  password: string
+}
+
+export type Token = {
+  token: string
+}
