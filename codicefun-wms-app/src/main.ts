@@ -12,7 +12,7 @@ import 'normalize.css/normalize.css'
 const app = createApp(App)
 
 app
+  .use(pinia)
   .use(router)
   .use(ElementPlus, { locale: zhCn })
-  .use(pinia)
   .mount('#app')
