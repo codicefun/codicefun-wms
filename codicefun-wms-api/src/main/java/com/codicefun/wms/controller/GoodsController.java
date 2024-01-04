@@ -6,6 +6,7 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.codicefun.wms.entity.Constant;
 import com.codicefun.wms.entity.po.Goods;
 import com.codicefun.wms.entity.po.GoodsType;
+import com.codicefun.wms.entity.po.Record;
 import com.codicefun.wms.entity.po.Warehouse;
 import com.codicefun.wms.entity.vo.AmountVO;
 import com.codicefun.wms.entity.vo.GoodsVO;
@@ -13,8 +14,11 @@ import com.codicefun.wms.entity.vo.PaginationVO;
 import com.codicefun.wms.entity.vo.ResponseVO;
 import com.codicefun.wms.service.GoodsService;
 import com.codicefun.wms.service.GoodsTypeService;
+import com.codicefun.wms.service.RecordService;
 import com.codicefun.wms.service.WarehouseService;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.Date;
 
 @RestController
 @RequestMapping("/goods")
@@ -23,13 +27,16 @@ public class GoodsController {
     private final GoodsService goodsService;
     private final WarehouseService warehouseService;
     private final GoodsTypeService goodsTypeService;
+    private final RecordService recordService;
 
     public GoodsController(GoodsService goodsService,
                            WarehouseService warehouseService,
-                           GoodsTypeService goodsTypeService) {
+                           GoodsTypeService goodsTypeService,
+                           RecordService recordService) {
         this.goodsService = goodsService;
         this.warehouseService = warehouseService;
         this.goodsTypeService = goodsTypeService;
+        this.recordService = recordService;
     }
 
     @PostMapping
@@ -50,7 +57,7 @@ public class GoodsController {
     }
 
     @GetMapping("/{id}")
-    public ResponseVO<GoodsVO> get(@PathVariable Long id) {
+    public ResponseVO<GoodsVO> get(@PathVariable Integer id) {
         GoodsVO goodsVO = goodsService.getVOById(id);
 
         return ResponseVO.success(goodsVO);
@@ -64,13 +71,22 @@ public class GoodsController {
     }
 
     @DeleteMapping("/{id}")
-    public ResponseVO<Goods> remove(@PathVariable int id) {
+    public ResponseVO<Goods> remove(@PathVariable Integer id) {
         return goodsService.removeById(id) ? ResponseVO.success() : ResponseVO.fail();
     }
 
     @PutMapping("/{id}/amount")
-    public ResponseVO<Goods> changeAmount(@PathVariable Long id, @RequestBody AmountVO amountVO) {
+    public ResponseVO<Goods> changeAmount(@PathVariable Integer id, @RequestBody AmountVO amountVO) {
         Goods goods = goodsService.getById(id);
+
+        if (goods.getAmount() > amountVO.getAmount()) {
+            recordService.save(new Record(null, "出库", goods.getWarehouseId(), goods.getId(), goods.getGoodsTypeId(),
+                    goods.getAmount() - amountVO.getAmount(), amountVO.getUserid(), new Date()));
+        } else {
+            recordService.save(new Record(null, "入库", goods.getWarehouseId(), goods.getId(), goods.getGoodsTypeId(),
+                    amountVO.getAmount() - goods.getAmount(), amountVO.getUserid(), new Date()));
+        }
+
         goods.setAmount(amountVO.getAmount());
 
         return goodsService.updateById(goods) ? ResponseVO.success() : ResponseVO.fail();

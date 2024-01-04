@@ -9,4 +9,9 @@ import org.springframework.stereotype.Service;
 @Service
 public class WarehouseServiceImpl extends ServiceImpl<WarehouseMapper, Warehouse> implements WarehouseService {
 
+    @Override
+    public String getNameById(Long id) {
+        return getById(id).getName();
+    }
+
 }

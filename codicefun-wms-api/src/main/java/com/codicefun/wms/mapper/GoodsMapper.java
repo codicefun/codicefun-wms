@@ -7,7 +7,7 @@ import com.codicefun.wms.entity.vo.GoodsVO;
 
 public interface GoodsMapper extends BaseMapper<Goods> {
 
-    GoodsVO selectVOById(Long id);
+    GoodsVO selectVOById(Integer id);
 
     IPage<GoodsVO> selectVOPage(IPage<GoodsVO> page);
 

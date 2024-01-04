@@ -29,7 +29,7 @@ const warehouseOption = ref<Warehouse[]>()
 const userOption = ref<User[]>()
 const type = ref('')
 const warehouse = ref('')
-const user = ref('')
+const user = ref<number>()
 
 // Functions
 const updateData = async () => {
@@ -155,7 +155,7 @@ const increase = async () => {
   amountDialogVisible.value = false
   const resp = await reqChangeAmount(allFormData.value.id, {
     amount: Number(amountFormData.value.amount) + Number(allFormData.value.amount),
-    username: user.value
+    userid: user.value
   })
 
   if (resp.code === 200) {
@@ -183,7 +183,7 @@ const decrease = async () => {
 
   const resp = await reqChangeAmount(allFormData.value.id, {
     amount,
-    username: user.value
+    userid: user.value
   })
 
   if (resp.code === 200) {
@@ -310,7 +310,7 @@ reqUserList({ params: { size: 100 } }).then(resp => {
       </el-form-item>
       <el-form-item label="申请人">
         <el-select v-model="user" placeholder="请选择">
-          <el-option v-for="item in userOption" :key="item.nickname" :label="item.nickname" :value="item.nickname" />
+          <el-option v-for="item in userOption" :key="item.id" :label="item.username" :value="item.id" />
         </el-select>
       </el-form-item>
     </el-form>

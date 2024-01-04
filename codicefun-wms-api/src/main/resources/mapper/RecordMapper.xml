@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.codicefun.wms.mapper.RecordMapper">
+
+  <resultMap id="GoodsMap" type="com.codicefun.wms.entity.vo.RecordVO">
+    <result property="id" column="id"/>
+    <result property="operation" column="operation"/>
+    <result property="warehouse" column="warehouse_name"/>
+    <result property="goods" column="goods_name"/>
+    <result property="type" column="type_name"/>
+    <result property="amount" column="amount"/>
+    <result property="username" column="username"/>
+    <result property="time" column="time"/>
+  </resultMap>
+
+  <select id="selectVOPage" resultType="com.codicefun.wms.entity.vo.RecordVO">
+    SELECT `r`.`id`     AS `id`,
+           `operation`,
+           `w`.`name`   AS `warehouse`,
+           `g`.`name`   AS `goods`,
+           `t`.`name`   AS `type`,
+           `r`.`amount` AS `amount`,
+           `username`,
+           `time`
+    FROM `record` AS `r`
+           JOIN `warehouse` AS `w` ON `r`.`warehouse_id` = `w`.`id`
+           JOIN `goods` AS `g` ON `r`.`goods_id` = `g`.`id`
+           JOIN `goods_type` AS `t` ON `g`.`goods_type_id` = `t`.`id`
+           JOIN `user` AS `u` ON `r`.`user_id` = `u`.`id`
+  </select>
+
+</mapper>

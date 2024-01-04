@@ -38,13 +38,19 @@ const router = useRouter()
           <el-icon>
             <setting />
           </el-icon>
-          <template #title>物品分类管理</template>
+          <template #title>货物分类管理</template>
         </el-menu-item>
         <el-menu-item index="5" @click="router.push('/goods')">
           <el-icon>
             <setting />
           </el-icon>
-          <template #title>物品管理</template>
+          <template #title>货物管理</template>
+        </el-menu-item>
+        <el-menu-item index="6" @click="router.push('/record')">
+          <el-icon>
+            <setting />
+          </el-icon>
+          <template #title>记录管理</template>
         </el-menu-item>
       </el-menu>
     </el-scrollbar>

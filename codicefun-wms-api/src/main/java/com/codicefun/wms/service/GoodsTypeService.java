@@ -5,4 +5,6 @@ import com.codicefun.wms.entity.po.GoodsType;
 
 public interface GoodsTypeService extends IService<GoodsType> {
 
+    String getNameById(Long id);
+
 }

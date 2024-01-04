@@ -7,8 +7,10 @@ import com.codicefun.wms.entity.vo.GoodsVO;
 
 public interface GoodsService extends IService<Goods> {
 
-    GoodsVO getVOById(Long id);
+    GoodsVO getVOById(Integer id);
 
     IPage<GoodsVO> pageVO(IPage<GoodsVO> page);
+
+    String getNameById(Integer id);
 
 }

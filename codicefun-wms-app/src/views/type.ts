@@ -1,4 +1,4 @@
 export type AmountForm = {
   amount: number
-  username: string
+  userid: number | undefined
 }

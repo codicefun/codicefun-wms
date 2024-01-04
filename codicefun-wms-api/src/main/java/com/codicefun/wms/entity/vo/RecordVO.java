@@ -2,14 +2,18 @@ package com.codicefun.wms.entity.vo;
 
 import lombok.Data;
 
+import java.util.Date;
+
 @Data
-public class GoodsVO {
+public class RecordVO {
 
     private Integer id;
-    private String name;
+    private String operation;
     private String warehouse;
+    private String goods;
     private String type;
     private Integer amount;
-    private String description;
+    private String username;
+    private Date time;
 
 }

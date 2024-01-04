@@ -8,7 +8,7 @@ import lombok.Data;
 public class GoodsType {
 
     @TableId(type = IdType.AUTO)
-    private Long id;
+    private Integer id;
 
     private String name;
 

@@ -5,7 +5,7 @@ import lombok.Data;
 @Data
 public class AmountVO {
 
-    private Long amount;
-    private String username;
+    private Integer amount;
+    private Integer userid;
 
 }

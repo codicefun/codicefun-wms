@@ -9,4 +9,9 @@ import org.springframework.stereotype.Service;
 @Service
 public class GoodsTypeServiceImpl extends ServiceImpl<GoodsTypeMapper, GoodsType> implements GoodsTypeService {
 
+    @Override
+    public String getNameById(Long id) {
+        return getById(id).getName();
+    }
+
 }

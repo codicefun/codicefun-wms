@@ -1,6 +1,15 @@
 import type { RouteRecordRaw } from 'vue-router'
 import { Layout } from '@/layout/index'
-import { GoodsTypeView, GoodsView, HomeView, LoginView, RegisterView, UserView, WarehouseView } from '@/views'
+import {
+  GoodsTypeView,
+  GoodsView,
+  HomeView,
+  LoginView,
+  RecordView,
+  RegisterView,
+  UserView,
+  WarehouseView
+} from '@/views'
 
 export const routes: Readonly<RouteRecordRaw[]> = [
   {
@@ -26,6 +35,10 @@ export const routes: Readonly<RouteRecordRaw[]> = [
       {
         path: '/goods',
         component: () => GoodsView
+      },
+      {
+        path: '/record',
+        component: () => RecordView
       }
     ]
   },
