@@ -1,5 +1,4 @@
 import request from '@/request'
-import type { User } from '@/request/user/type'
 import type { AxiosRequestConfig } from 'axios'
 import type { Pagination } from '@/request/type'
 import type { Warehouse } from '@/request/warehouse/type'
@@ -7,7 +6,7 @@ import type { Warehouse } from '@/request/warehouse/type'
 const API_WAREHOUSE = '/warehouse'
 
 export const reqGetById = (id: number) => {
-  return request.get<any, User>(`${API_WAREHOUSE}/${id}`)
+  return request.get<any, Warehouse>(`${API_WAREHOUSE}/${id}`)
 }
 
 export const reqUpdateById = (id: number, data: Warehouse) => {
@@ -18,7 +17,7 @@ export const reqDeleteById = (id: number) => {
   return request.delete(`${API_WAREHOUSE}/${id}`)
 }
 
-export const reqList = (config?: AxiosRequestConfig) => {
+export const reqWarehouseList = (config?: AxiosRequestConfig) => {
   return request.get<null, Pagination<Warehouse>>(API_WAREHOUSE, config)
 }
 

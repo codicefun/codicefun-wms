@@ -8,7 +8,7 @@ import lombok.Data;
 public class Warehouse {
 
     @TableId(type = IdType.AUTO)
-    private Integer id;
+    private Long id;
 
     private String name;
 

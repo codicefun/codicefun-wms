@@ -40,6 +40,12 @@ const router = useRouter()
           </el-icon>
           <template #title>物品分类管理</template>
         </el-menu-item>
+        <el-menu-item index="5" @click="router.push('/goods')">
+          <el-icon>
+            <setting />
+          </el-icon>
+          <template #title>物品管理</template>
+        </el-menu-item>
       </el-menu>
     </el-scrollbar>
   </el-aside>

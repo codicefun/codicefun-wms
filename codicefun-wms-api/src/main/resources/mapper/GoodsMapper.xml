@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.codicefun.wms.mapper.GoodsMapper">
+
+  <resultMap id="GoodsMap" type="com.codicefun.wms.entity.vo.GoodsVO">
+    <result property="id" column="id"/>
+    <result property="name" column="name"/>
+    <result property="warehouse" column="warehouse_name"/>
+    <result property="type" column="type_name"/>
+    <result property="amount" column="amount"/>
+    <result property="description" column="description"/>
+  </resultMap>
+
+  <select id="selectById" resultMap="GoodsMap">
+    SELECT `g`.`id`, `g`.`name`, `w`.`name` AS `warehouse_name`, `t`.`name` AS `type_name`, `amount`, `g`.`description`
+    FROM `goods` AS `g`
+           JOIN `warehouse` AS `w` ON `g`.`warehouse_id` = `w`.`id`
+           JOIN `goods_type` AS `t` ON `g`.`goods_type_id` = `t`.`id`
+    WHERE `g`.`id` = #{id}
+  </select>
+
+  <select id="selectPage" resultMap="GoodsMap">
+    SELECT `g`.`id`, `g`.`name`, `w`.`name` AS `warehouse_name`, `t`.`name` AS `type_name`, `amount`, `g`.`description`
+    FROM `goods` AS `g`
+           JOIN `warehouse` AS `w` ON `g`.`warehouse_id` = `w`.`id`
+           JOIN `goods_type` AS `t` ON `g`.`goods_type_id` = `t`.`id`
+  </select>
+
+</mapper>

@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { ref } from 'vue'
-import { reqCreate, reqDeleteById, reqList, reqUpdateById } from '@/request/goodstype'
+import { reqCreate, reqDeleteById, reqTypeList, reqUpdateById } from '@/request/goodstype'
 import { ElMessage, ElMessageBox } from 'element-plus'
 import type { GoodsType } from '@/request/goodstype/type'
 
@@ -14,7 +14,7 @@ const total = ref<number>()
 const dialogVisible = ref(false)
 
 const updateData = async () => {
-  const resp = await reqList({ params: { current: current.value, size: size.value } })
+  const resp = await reqTypeList({ params: { current: current.value, size: size.value } })
 
   if (resp.code === 200) {
     total.value = resp.data.total
@@ -23,7 +23,7 @@ const updateData = async () => {
 }
 
 const handleCurrentChange = async (val: number) => {
-  const resp = await reqList({ params: { current: val, size: size.value } })
+  const resp = await reqTypeList({ params: { current: val, size: size.value } })
 
   if (resp.code === 200) {
     current.value = val
@@ -32,7 +32,7 @@ const handleCurrentChange = async (val: number) => {
 }
 
 const handleSizeChange = async (val: number) => {
-  const resp = await reqList({ params: { current: current.value, size: val } })
+  const resp = await reqTypeList({ params: { current: current.value, size: val } })
 
   if (resp.code === 200) {
     size.value = val
@@ -113,7 +113,7 @@ const deleteRow = async (id: number) => {
 }
 
 // Get data in the beginning
-reqList().then(resp => {
+reqTypeList().then(resp => {
   if (resp.code === 200) {
     current.value = resp.data.current
     size.value = resp.data.size

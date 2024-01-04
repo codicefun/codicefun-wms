@@ -1,20 +1,29 @@
 <script setup lang="ts">
 import { ref } from 'vue'
-import { reqCreate, reqDeleteById, reqWarehouseList, reqUpdateById } from '@/request/warehouse'
+import { reqCreate, reqDeleteById, reqList, reqUpdateById } from '@/request/goods'
 import { ElMessage, ElMessageBox } from 'element-plus'
+import type { Goods } from '@/request/goods/type'
+import { reqTypeList } from '@/request/goodstype'
+import { reqWarehouseList } from '@/request/warehouse'
+import type { GoodsType } from '@/request/goodstype/type'
 import type { Warehouse } from '@/request/warehouse/type'
 
-const tableData = ref<Warehouse[]>()
-const formData = ref<Warehouse>({} as Warehouse)
+const tableData = ref<Goods[]>()
+const formData = ref<Goods>({} as Goods)
 const formTitle = ref<string>()
 
 const current = ref<number>()
 const size = ref<number>()
 const total = ref<number>()
+
 const dialogVisible = ref(false)
+const typeOption = ref<GoodsType[]>()
+const warehouseOption = ref<Warehouse[]>()
+const type = ref('')
+const warehouse = ref('')
 
 const updateData = async () => {
-  const resp = await reqWarehouseList({ params: { current: current.value, size: size.value } })
+  const resp = await reqList({ params: { current: current.value, size: size.value } })
 
   if (resp.code === 200) {
     total.value = resp.data.total
@@ -23,7 +32,7 @@ const updateData = async () => {
 }
 
 const handleCurrentChange = async (val: number) => {
-  const resp = await reqWarehouseList({ params: { current: val, size: size.value } })
+  const resp = await reqList({ params: { current: val, size: size.value } })
 
   if (resp.code === 200) {
     current.value = val
@@ -32,7 +41,7 @@ const handleCurrentChange = async (val: number) => {
 }
 
 const handleSizeChange = async (val: number) => {
-  const resp = await reqWarehouseList({ params: { current: current.value, size: val } })
+  const resp = await reqList({ params: { current: current.value, size: val } })
 
   if (resp.code === 200) {
     size.value = val
@@ -40,14 +49,18 @@ const handleSizeChange = async (val: number) => {
   }
 }
 
-const showEditDialog = (row: Warehouse) => {
+const showEditDialog = (row: Goods) => {
   dialogVisible.value = true
   formData.value = { ...row }
-  formTitle.value = '修改仓库信息'
+  warehouse.value = formData.value.warehouse
+  type.value = formData.value.type
+  formTitle.value = '修改物品信息'
 }
 
 const edit = async () => {
   dialogVisible.value = false
+  formData.value.warehouse = warehouse.value
+  formData.value.type = type.value
   const resp = await reqUpdateById(formData.value.id, formData.value)
 
   if (resp.code === 200) {
@@ -63,12 +76,16 @@ const edit = async () => {
 
 const showCreateDialog = () => {
   dialogVisible.value = true
-  formData.value = {} as Warehouse
-  formTitle.value = '新增仓库信息'
+  formData.value = {} as Goods
+  warehouse.value = ''
+  type.value = ''
+  formTitle.value = '新增物品信息'
 }
 
 const create = async () => {
   dialogVisible.value = false
+  formData.value.warehouse = warehouse.value
+  formData.value.type = type.value
   const resp = await reqCreate(formData.value)
 
   if (resp.code === 200) {
@@ -113,12 +130,23 @@ const deleteRow = async (id: number) => {
 }
 
 // Get data in the beginning
-reqWarehouseList().then(resp => {
+reqList().then(resp => {
   if (resp.code === 200) {
     current.value = resp.data.current
     size.value = resp.data.size
     total.value = resp.data.total
     tableData.value = resp.data.list
+  }
+})
+
+reqTypeList({ params: { size: 100 } }).then(resp => {
+  if (resp.code === 200) {
+    typeOption.value = resp.data.list
+  }
+})
+reqWarehouseList({ params: { size: 100 } }).then(resp => {
+  if (resp.code === 200) {
+    warehouseOption.value = resp.data.list
   }
 })
 </script>
@@ -132,7 +160,10 @@ reqWarehouseList().then(resp => {
   <el-scrollbar>
     <el-table size="large" :data="tableData" style="width: 100%;">
       <el-table-column prop="id" label="ID" width="100" />
-      <el-table-column prop="name" label="仓库名" width="200" />
+      <el-table-column prop="name" label="名称" width="100" />
+      <el-table-column prop="warehouse" label="仓库" width="200" />
+      <el-table-column prop="type" label="分类" width="100" />
+      <el-table-column prop="amount" label="数量" width="100" />
       <el-table-column prop="description" label="描述" width="300" />
       <el-table-column fixed="right" label="操作" width="120">
         <template #default="{row}">
@@ -162,8 +193,21 @@ reqWarehouseList().then(resp => {
       label-width="100px"
       :model="formData"
       style="max-width: 460px">
-      <el-form-item label="仓库名">
+      <el-form-item label="名称">
         <el-input v-model="formData.name" />
+      </el-form-item>
+      <el-form-item label="仓库">
+        <el-select v-model="warehouse" placeholder="请选择">
+          <el-option v-for="item in warehouseOption" :key="item.name" :label="item.name" :value="item.name" />
+        </el-select>
+      </el-form-item>
+      <el-form-item label="分类">
+        <el-select v-model="type" placeholder="请选择">
+          <el-option v-for="item in typeOption" :key="item.name" :label="item.name" :value="item.name" />
+        </el-select>
+      </el-form-item>
+      <el-form-item label="数量">
+        <el-input type="number" v-model="formData.amount" />
       </el-form-item>
       <el-form-item label="描述">
         <el-input type="textarea" v-model="formData.description" />
