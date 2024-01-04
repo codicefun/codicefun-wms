@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { ref } from 'vue'
-import { reqList, reqUpdateById } from '@/request/user'
+import { reqChangeState, reqList, reqUpdateById } from '@/request/user'
 import { ElMessage } from 'element-plus'
 import type { User } from '@/request/user/type'
 
@@ -57,7 +57,21 @@ const edit = async () => {
     await getData()
     ElMessage({
       showClose: true,
-      message: '编辑成功',
+      message: '修改成功',
+      type: 'success'
+    })
+  }
+}
+
+const changeState = async (id: number) => {
+  const resp = await reqChangeState(id)
+
+  if (resp.code === 200) {
+    // Update table data
+    await getData()
+    ElMessage({
+      showClose: true,
+      message: '修改成功',
       type: 'success'
     })
   }
@@ -97,7 +111,7 @@ getData()
       <el-table-column fixed="right" label="操作" width="200">
         <template #default="{row}">
           <el-button link type="primary" @click="showEditDialog(row)">编辑</el-button>
-          <el-button link type="warning">
+          <el-button link type="warning" @click="changeState(row.id)">
             {{ row.state === 0 ? '封禁' : '解封' }}
           </el-button>
           <el-button link type="danger">删除</el-button>

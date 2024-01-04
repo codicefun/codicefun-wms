@@ -67,6 +67,24 @@ public class UserController {
         return userService.removeById(id) ? ResponseVO.success() : ResponseVO.fail();
     }
 
+    @PutMapping("/{id}/state")
+    public ResponseVO<User> changeState(@PathVariable Long id) {
+        User user = userService.getById(id);
+
+        if (user == null) {
+            return ResponseVO.fail();
+        }
+
+        Integer state = user.getState();
+        if (state == 0) {
+            user.setState(1);
+        } else {
+            user.setState(0);
+        }
+
+        return userService.updateById(user) ? ResponseVO.success() : ResponseVO.fail();
+    }
+
     @PostMapping("/login")
     public ResponseVO<TokenVO> login(@RequestBody LoginQO loginQO) {
         LambdaQueryWrapper<User> queryWrapper = new LambdaQueryWrapper<>();

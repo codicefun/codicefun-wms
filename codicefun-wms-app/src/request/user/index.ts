@@ -25,6 +25,10 @@ export const reqCreate = (data: User) => {
   return request.post(API_USER, data)
 }
 
+export const reqChangeState = (id: number) => {
+  return request.put(`${API_USER}/${id}/state`, null)
+}
+
 export const reqLogin = (data: LoginData) => {
   return request.post<LoginData, Token>(`${API_USER}/login`, data)
 }
