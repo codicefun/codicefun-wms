@@ -30,6 +30,8 @@ public class JwtUtil {
         Date now = new Date();
         Date expiration = new Date(now.getTime() + expire);
 
+        logger.info("expire: " + expire);
+
         return Jwts.builder().header()
                    .add("type", "JWT")
                    .and()

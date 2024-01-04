@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { ref } from 'vue'
-import { reqChangeState, reqCreate, reqList, reqUpdateById } from '@/request/user'
-import { ElMessage } from 'element-plus'
+import { reqChangeState, reqCreate, reqDeleteById, reqList, reqUpdateById } from '@/request/user'
+import { ElMessage, ElMessageBox } from 'element-plus'
 import type { User } from '@/request/user/type'
 
 const tableData = ref<User[]>()
@@ -14,7 +14,7 @@ const total = ref<number>()
 const dialogVisible = ref(false)
 
 const updateData = async () => {
-  const resp = await reqList()
+  const resp = await reqList({ params: { current: current.value, size: size.value } })
 
   if (resp.code === 200) {
     total.value = resp.data.total
@@ -96,6 +96,36 @@ const create = async () => {
   }
 }
 
+const deleteRow = async (id: number) => {
+  try {
+    await ElMessageBox.confirm(
+      '确定要删除这行数据吗?',
+      'Warning',
+      {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning'
+      }
+    )
+    const resp = await reqDeleteById(id)
+
+    if (resp.code === 200) {
+      await updateData()
+      ElMessage({
+        showClose: true,
+        type: 'success',
+        message: '删除成功'
+      })
+    }
+  } catch (e) {
+    ElMessage({
+      showClose: true,
+      type: 'info',
+      message: '删除取消'
+    })
+  }
+}
+
 // Get data in the beginning
 reqList().then(resp => {
   if (resp.code === 200) {
@@ -145,7 +175,7 @@ reqList().then(resp => {
           <el-button link type="warning" @click="changeState(row.id)">
             {{ row.state === 0 ? '封禁' : '解封' }}
           </el-button>
-          <el-button link type="danger">删除</el-button>
+          <el-button link type="danger" @click="deleteRow(row.id)">删除</el-button>
         </template>
       </el-table-column>
     </el-table>
