@@ -10,6 +10,7 @@ public class GoodsVO {
     private String warehouse;
     private String type;
     private Integer amount;
+    private Integer loss;
     private String description;
 
 }

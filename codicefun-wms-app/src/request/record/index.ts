@@ -5,10 +5,10 @@ import type { Record } from '@/request/record/type'
 
 const API_RECORD = '/record'
 
-export const reqDeleteById = (id: number) => {
+export const reqRecoverById = (id: number) => {
   return request.delete(`${API_RECORD}/${id}`)
 }
 
-export const reqTypeList = (config?: AxiosRequestConfig) => {
+export const reqList = (config?: AxiosRequestConfig) => {
   return request.get<null, Pagination<Record>>(API_RECORD, config)
 }

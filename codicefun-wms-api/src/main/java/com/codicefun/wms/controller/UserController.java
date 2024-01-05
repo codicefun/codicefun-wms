@@ -39,8 +39,11 @@ public class UserController {
         LambdaQueryWrapper<User> queryWrapper = new LambdaQueryWrapper<>();
 
         if (user != null) {
-            if (user.getNickname() != null) {
-                queryWrapper.like(User::getNickname, user.getNickname());
+            if (user.getState() != null) {
+                queryWrapper.eq(User::getState, user.getState());
+            }
+            if (user.getRole() != null) {
+                queryWrapper.eq(User::getRole, user.getRole());
             }
         }
 
@@ -92,7 +95,8 @@ public class UserController {
 
         if (username != null && password != null) {
             queryWrapper.eq(User::getUsername, username)
-                        .eq(User::getPassword, password);
+                        .eq(User::getPassword, password)
+                        .ne(User::getRole, 2);
             User user = userService.getOne(queryWrapper);
             if (user != null) {
                 String token = jwtUtil.generateToken(username);

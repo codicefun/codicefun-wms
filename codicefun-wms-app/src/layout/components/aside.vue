@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import { Document, House, Setting } from '@element-plus/icons-vue'
+import { House, Setting } from '@element-plus/icons-vue'
 import { useSettingStore } from '@/stores'
 import { useRouter } from 'vue-router'
 
@@ -24,7 +24,7 @@ const router = useRouter()
         </el-menu-item>
         <el-menu-item index="2" @click="router.push('/user')">
           <el-icon>
-            <document />
+            <setting />
           </el-icon>
           <template #title>用户管理</template>
         </el-menu-item>

@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { ref } from 'vue'
-import { reqDeleteById, reqTypeList } from '@/request/record'
+import { reqRecoverById, reqList } from '@/request/record'
 import { ElMessage, ElMessageBox } from 'element-plus'
 import type { Record } from '@/request/record/type'
 import moment from 'moment'
@@ -12,7 +12,7 @@ const size = ref<number>()
 const total = ref<number>()
 
 const updateData = async () => {
-  const resp = await reqTypeList({ params: { current: current.value, size: size.value } })
+  const resp = await reqList({ params: { current: current.value, size: size.value } })
 
   if (resp.code === 200) {
     total.value = resp.data.total
@@ -21,7 +21,7 @@ const updateData = async () => {
 }
 
 const handleCurrentChange = async (val: number) => {
-  const resp = await reqTypeList({ params: { current: val, size: size.value } })
+  const resp = await reqList({ params: { current: val, size: size.value } })
 
   if (resp.code === 200) {
     current.value = val
@@ -30,7 +30,7 @@ const handleCurrentChange = async (val: number) => {
 }
 
 const handleSizeChange = async (val: number) => {
-  const resp = await reqTypeList({ params: { current: current.value, size: val } })
+  const resp = await reqList({ params: { current: current.value, size: val } })
 
   if (resp.code === 200) {
     size.value = val
@@ -49,7 +49,7 @@ const deleteRow = async (id: number) => {
         type: 'warning'
       }
     )
-    const resp = await reqDeleteById(id)
+    const resp = await reqRecoverById(id)
 
     if (resp.code === 200) {
       await updateData()
@@ -75,7 +75,7 @@ const dateFormat = (row: Record) => {
 }
 
 // Get data in the beginning
-reqTypeList().then(resp => {
+reqList().then(resp => {
   if (resp.code === 200) {
     current.value = resp.data.current
     size.value = resp.data.size
@@ -87,7 +87,7 @@ reqTypeList().then(resp => {
 
 <template>
   <el-scrollbar>
-    <el-table size="large" :data="tableData" style="width: 100%;">
+    <el-table size="large" height="70vh" :data="tableData" style="width: 100%;">
       <el-table-column prop="id" label="ID" width="100" />
       <el-table-column prop="operation" label="操作" width="100" />
       <el-table-column prop="warehouse" label="仓库" width="200" />
@@ -118,7 +118,7 @@ reqTypeList().then(resp => {
 
 <style scoped>
 .el-scrollbar {
-  height: 70vh;
+  height: auto;
 }
 
 .demo-pagination-block {

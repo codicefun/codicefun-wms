@@ -130,7 +130,7 @@ reqTypeList().then(resp => {
     </el-col>
   </el-row>
   <el-scrollbar>
-    <el-table size="large" :data="tableData" style="width: 100%;">
+    <el-table size="large" height="70vh" :data="tableData" style="width: 100%;">
       <el-table-column prop="id" label="ID" width="100" />
       <el-table-column prop="name" label="分类名" width="200" />
       <el-table-column prop="description" label="描述" width="300" />
@@ -181,7 +181,7 @@ reqTypeList().then(resp => {
 
 <style scoped>
 .el-scrollbar {
-  height: 70vh;
+  height: auto;
 }
 
 .demo-pagination-block {

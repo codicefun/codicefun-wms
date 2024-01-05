@@ -20,6 +20,8 @@ public class Goods {
 
     private Integer amount;
 
+    private Integer loss;
+
     private String description;
 
 }

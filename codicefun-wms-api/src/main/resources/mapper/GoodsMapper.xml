@@ -9,11 +9,18 @@
     <result property="warehouse" column="warehouse_name"/>
     <result property="type" column="type_name"/>
     <result property="amount" column="amount"/>
+    <result property="loss" column="loss"/>
     <result property="description" column="description"/>
   </resultMap>
 
   <select id="selectVOById" resultMap="GoodsMap">
-    SELECT `g`.`id`, `g`.`name`, `w`.`name` AS `warehouse_name`, `t`.`name` AS `type_name`, `amount`, `g`.`description`
+    SELECT `g`.`id`,
+           `g`.`name`,
+           `w`.`name` AS `warehouse_name`,
+           `t`.`name` AS `type_name`,
+           `amount`,
+           `loss`,
+           `g`.`description`
     FROM `goods` AS `g`
            JOIN `warehouse` AS `w` ON `g`.`warehouse_id` = `w`.`id`
            JOIN `goods_type` AS `t` ON `g`.`goods_type_id` = `t`.`id`
@@ -21,7 +28,13 @@
   </select>
 
   <select id="selectVOPage" resultMap="GoodsMap">
-    SELECT `g`.`id`, `g`.`name`, `w`.`name` AS `warehouse_name`, `t`.`name` AS `type_name`, `amount`, `g`.`description`
+    SELECT `g`.`id`,
+           `g`.`name`,
+           `w`.`name` AS `warehouse_name`,
+           `t`.`name` AS `type_name`,
+           `amount`,
+           `loss`,
+           `g`.`description`
     FROM `goods` AS `g`
            JOIN `warehouse` AS `w` ON `g`.`warehouse_id` = `w`.`id`
            JOIN `goods_type` AS `t` ON `g`.`goods_type_id` = `t`.`id`

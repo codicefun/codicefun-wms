@@ -105,7 +105,7 @@ public class GoodsController {
         Warehouse warehouse = warehouseService.getOne(warehouseLambdaQueryWrapper);
         GoodsType type = goodsTypeService.getOne(goodsTypeLambdaQueryWrapper);
 
-        return new Goods(goodsVO.getId(), goodsVO.getName(), warehouse.getId(), type.getId(), goodsVO.getAmount(), goodsVO.getDescription());
+        return new Goods(goodsVO.getId(), goodsVO.getName(), warehouse.getId(), type.getId(), goodsVO.getAmount(), goodsVO.getLoss(), goodsVO.getDescription());
     }
 
 }

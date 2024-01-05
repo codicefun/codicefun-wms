@@ -4,5 +4,6 @@ export type Goods = {
   warehouse: string
   type: string
   amount: number
+  loss: number
   description: string
 }

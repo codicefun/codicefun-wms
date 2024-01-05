@@ -144,8 +144,7 @@ reqUserList().then(resp => {
     </el-col>
   </el-row>
   <el-scrollbar>
-    <!-- TODO: Set height -->
-    <el-table size="large" :data="tableData" style="width: 100%;">
+    <el-table size="large" height="70vh" :data="tableData" style="width: 100%;">
       <el-table-column prop="id" label="ID" width="100" />
       <el-table-column prop="username" label="用户名" width="100" />
       <el-table-column prop="nickname" label="昵称" width="100" />
