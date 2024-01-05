@@ -38,6 +38,7 @@
     FROM `goods` AS `g`
            JOIN `warehouse` AS `w` ON `g`.`warehouse_id` = `w`.`id`
            JOIN `goods_type` AS `t` ON `g`.`goods_type_id` = `t`.`id`
+    ORDER BY `g`.`id`
   </select>
 
 </mapper>

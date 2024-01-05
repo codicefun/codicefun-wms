@@ -91,8 +91,8 @@ reqList().then(resp => {
       <el-table-column prop="id" label="ID" width="100" />
       <el-table-column prop="operation" label="操作" width="100" />
       <el-table-column prop="warehouse" label="仓库" width="200" />
-      <el-table-column prop="goods" label="货物" width="100" />
-      <el-table-column prop="type" label="分类" width="100" />
+      <el-table-column prop="goods" label="货物" width="200" />
+      <el-table-column prop="type" label="分类" width="200" />
       <el-table-column prop="amount" label="数量" width="100" />
       <el-table-column prop="username" label="用户" width="100" />
       <el-table-column prop="time" label="时间" :formatter="dateFormat" width="200" />

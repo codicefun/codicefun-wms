@@ -233,9 +233,9 @@ reqUserList({ params: { size: 100, state: 0, role: 2 } }).then(resp => {
   <el-scrollbar>
     <el-table size="large" height="70vh" :data="tableData" style="width: 100%;">
       <el-table-column prop="id" label="ID" width="100" />
-      <el-table-column prop="name" label="名称" width="100" />
+      <el-table-column prop="name" label="名称" width="200" />
       <el-table-column prop="warehouse" label="仓库" width="200" />
-      <el-table-column prop="type" label="分类" width="100" />
+      <el-table-column prop="type" label="分类" width="200" />
       <el-table-column prop="amount" label="数量" width="100" />
       <el-table-column prop="loss" label="损耗" width="100" />
       <el-table-column prop="description" label="描述" width="300" />

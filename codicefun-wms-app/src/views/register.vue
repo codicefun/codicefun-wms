@@ -38,16 +38,16 @@ const reset = function() {
     <el-form label-position="right"
              :model="formData"
              label-width="100">
-      <el-form-item label="Username">
+      <el-form-item label="用户名">
         <el-input v-model="formData.username" type="text" />
       </el-form-item>
-      <el-form-item label="Password">
+      <el-form-item label="密码">
         <el-input v-model="formData.password" type="password" />
       </el-form-item>
-      <el-form-item>
+      <div style="display: flex; justify-content: right">
         <el-button type="primary" @click="submit">注册</el-button>
         <el-button type="warning" @click="reset">重置</el-button>
-      </el-form-item>
+      </div>
     </el-form>
   </div>
 </template>
