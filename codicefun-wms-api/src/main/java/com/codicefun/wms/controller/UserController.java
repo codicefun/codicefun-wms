@@ -37,6 +37,7 @@ public class UserController {
             User user) {
         IPage<User> page = new Page<>(current, size);
         LambdaQueryWrapper<User> queryWrapper = new LambdaQueryWrapper<>();
+        queryWrapper.eq(User::getIsDeleted, 0);
 
         if (user != null) {
             if (user.getState() != null) {
@@ -66,7 +67,10 @@ public class UserController {
 
     @DeleteMapping("/{id}")
     public ResponseVO<User> remove(@PathVariable int id) {
-        return userService.removeById(id) ? ResponseVO.success() : ResponseVO.fail();
+        User user = userService.getById(id);
+        user.setIsDeleted(1);
+
+        return userService.updateById(user) ? ResponseVO.success() : ResponseVO.fail();
     }
 
     @PutMapping("/{id}/state")
@@ -96,7 +100,9 @@ public class UserController {
         if (username != null && password != null) {
             queryWrapper.eq(User::getUsername, username)
                         .eq(User::getPassword, password)
-                        .ne(User::getRole, 2);
+                        .ne(User::getRole, 2)
+                        .eq(User::getState, 0)
+                        .eq(User::getIsDeleted, 0);
             User user = userService.getOne(queryWrapper);
             if (user != null) {
                 String token = jwtUtil.generateToken(username);
